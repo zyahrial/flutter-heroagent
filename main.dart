@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:heroagent/screen/login.dart';
 import 'package:heroagent/screen/home.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:heroagent/network_utils/api.dart';
+// import 'package:heroagent/network_utils/api.dart';
 
 void main() => runApp(MyApp());
 

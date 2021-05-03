@@ -61,6 +61,7 @@ class _NavDrawer extends State<NavDrawer>  {
   void logout() async{
     var res = await Network().getData('/auth/logout');
     var body = json.decode(res.body);
+    print(body);
     if(body != null){
       SharedPreferences localStorage = await SharedPreferences.getInstance();
       Navigator.push(

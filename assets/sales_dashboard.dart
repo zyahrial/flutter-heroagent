@@ -14,7 +14,7 @@ class SalesDashboard extends StatelessWidget {
 }
 
 class SalesPage extends StatefulWidget {
-  SalesPage({Key key, this.title}) : super(key: key);
+  SalesPage({Key key = const Key("any_key"),this.title = ""}) : super(key: key);
 
   final String title;
 

@@ -23,9 +23,8 @@ class AdminDashboard extends StatelessWidget {
 }
 
 class AdminPage extends StatefulWidget {
-  AdminPage({Key key, this.title}) : super(key: key);
-
   final String title;
+  AdminPage({Key key = const Key("any_key"),this.title = ""}) : super(key: key);
 
   @override
   _AdminDashboardState createState() => _AdminDashboardState();

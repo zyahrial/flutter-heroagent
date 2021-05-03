@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Network{
-  final String _url = 'https://dd38db204888.ngrok.io';
+  final String _url = 'https://d0ebd415a665.ngrok.io';
   //if you are using android studio emulator, change localhost to 10.0.2.2
   var token;
 

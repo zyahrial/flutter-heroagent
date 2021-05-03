@@ -16,6 +16,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home>{
+
   var  name;
   var  mytoken;
   int currentTabIndex = 0;
@@ -23,8 +24,8 @@ class _HomeState extends State<Home>{
   List<Widget> tabs = [
     AdminDashboard(),
     SalesDashboard(),
-    LeadsList(),
-    OverdueList()
+    OverdueList(),
+    LeadsList()
   ];
   onTapped(int index) {
     setState(() {
@@ -67,35 +68,7 @@ class _HomeState extends State<Home>{
         backgroundColor: Colors.teal,
       ),
       drawer: NavDrawer(),
-      // body: Padding(
-      //   padding: const EdgeInsets.all(8.0),
-      //   child: Column(
-      //     crossAxisAlignment: CrossAxisAlignment.start,
-      //     children: <Widget>[
-      //       Text('Hi, $name',
-      //         style: TextStyle(
-      //             fontWeight: FontWeight.bold
-      //         ),
-      //       ),
-      //       Text('Token, $mytoken',
-      //         style: TextStyle(
-      //             fontWeight: FontWeight.bold
-      //         ),
-      //       ),
-      //       Center(
-      //         // child: RaisedButton(
-      //         //   elevation: 10,
-      //         //   onPressed: (){
-      //         //     logout();
-      //         //   },
-      //         //   color: Colors.teal,
-      //         //   shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
-      //         //   child: Text('Logout'),
-      //         // ),
-      //       ),
-      //     ],
-      //   ),
-      // ),
+
       body: tabs[currentTabIndex],
       bottomNavigationBar: new Theme(
       data: Theme.of(context).copyWith(

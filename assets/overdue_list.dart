@@ -8,7 +8,7 @@ class OverdueList extends StatelessWidget {
         appBar: new AppBar(
           title: new Text("Leads Overdue"),
         ),
-        body: new ContactList(kContacts));
+        body: new Overdue(kContacts));
   }
 }
 
@@ -18,10 +18,10 @@ const kContacts = const <Contact>[
   const Contact(fullName: 'Emilie Olsen', email: 'emilie.olsen@example.com')
 ];
 
-class ContactList extends StatelessWidget {
+class Overdue extends StatelessWidget {
   final List<Contact> _contacts;
 
-  ContactList(this._contacts);
+  Overdue(this._contacts);
 
   @override
   Widget build(BuildContext context) {
@@ -47,5 +47,5 @@ class Contact {
   final String fullName;
   final String email;
 
-  const Contact({this.fullName, this.email});
+  const Contact({this.fullName = "", this.email = ""});
 }
