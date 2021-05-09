@@ -5,30 +5,21 @@ import 'package:heroagent/network_utils/api.dart';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:heroagent/assets/leads_detail.dart';
 
 // Future<List<Leads>> fetchLeads() async {
 Future<List<Leads>> fetchLeads() async {
   final response = await Network().getData('/api/leads/TEST001');
-  // List<Leads> list;
-  // final response = await Network().getData('/api/leads/TEST001');
   if (response.statusCode == 200) {
     List jsonResponse = json.decode(response.body);
     return jsonResponse.map((leads) => new Leads.fromJson(leads)).toList();
   } else {
     throw Exception('Failed to load leads from API');
   }
-  // List<Leads> tagObjs = tagObjsJson.map((json) => Leads.fromJson(json)).toList();
-  // print(tagObjs);
-  // list = rest.map<Leads>((json) => Leads.fromJson(json)).toList();
-  // return rest;
-  //   var rest = responseJson["leads"] as List;
+
 }
 
 List<Leads> parseLeads(String responseBody) {
-  // final responseJson = json.decode(responseBody);
-  // final rest = responseJson["leads"];
-  // final parsed = jsonDecode(rest).cast<Map<String, dynamic>>();
-  // return parsed.map<Leads>((json) => Leads.fromJson(json)).toList();
   final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
 
   return parsed.map<Leads>((json) => Leads.fromJson(json)).toList();
@@ -42,9 +33,8 @@ class Leads{
   final String phone_number;
   final String media;
   final String channel;
-  final String name_icon;
 
-  Leads({this.created_at,this.lead_id,this.name,this.email,this.phone_number,this.media,this.channel,this.name_icon});
+  Leads({this.created_at,this.lead_id,this.name,this.email,this.phone_number,this.media,this.channel});
 
   factory Leads.fromJson(Map<String, dynamic> json) {
     return Leads(
@@ -55,14 +45,77 @@ class Leads{
       phone_number: json['phone_number'] as String,
       media: json['media'] as String,
       channel: json['channel'] as String,
-      name_icon: json['name'] as String,
     );
   }
 }
+class LeadsList extends StatefulWidget {
+  @override
+  _LeadsList createState() => _LeadsList();
+}
 
+// class ListTest extends StatefulWidget {
+//   @override
+//   _LeadsList createState() => new _LeadsList();
+// }
+class _LeadsList extends State<LeadsList> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  String lead_id;
+  @override
+  void initState() {
+    // fetchLeads;
+    super.initState();
+  }
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Leads List',
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('Leads'),
+        ),
+        body: Center(
+            child: LeadsListView(),
+        ),
+      ),
+    );
+  }
+}
 class LeadsListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    ListTile _tile(String name, String phone_number, String media) =>
+        ListTile(
+          title: Text(name ?? ""),
+          subtitle: Text(phone_number ?? ""),
+          leading: CircleAvatar(child: Text('A')),
+          trailing: Icon(
+              media == 'LP-CALL' ? Icons.local_phone : media == 'LP-CHAT'
+                  ? Icons
+                  .chat
+                  : Icons.text_format),
+          onTap: () {
+            // setState((){
+            //   lead_id = index; //if you want to assign the index somewhere to check
+            // });
+            // _scaffoldKey.currentState.showSnackBar(new SnackBar(content: new Text("You clicked item number $_id")));
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => LeadsDetail(),
+              ),
+            );
+          },
+        );
+
+    ListView _leadsListView(data) {
+      // final name_icon = data[index].name;
+      return ListView.builder(
+          padding: new EdgeInsets.symmetric(vertical: 8.0),
+          itemCount: data.length,
+          itemBuilder: (context, index) {
+            return _tile(
+                data[index].name, data[index].phone_number, data[index].media);
+          });
+    }
     return FutureBuilder<List<Leads>>(
       future: fetchLeads(),
       builder: (context, snapshot) {
@@ -78,69 +131,4 @@ class LeadsListView extends StatelessWidget {
   }
 }
 
-ListView _leadsListView(data) {
-  // final name_icon = data[index].name;
-  return ListView.builder(
-      padding: new EdgeInsets.symmetric(vertical: 8.0),
-      // itemBuilder: (context, index) {
-      //   return new _ContactListItem(_contacts[index]);
-      // },
-      itemCount: data.length,
-      itemBuilder: (context, index) {
-        return _tile(data[index].name, data[index].phone_number, data[index].name_icon);
-      });
-}
-ListTile _tile(String name, String phone_number , String name_icon) => ListTile(
-  // title: Text(lead_id,
-  //     style: TextStyle(
-  //       fontWeight: FontWeight.w500,
-  //       fontSize: 20,
-  //     )),
-  // subtitle: Text(phone_number),
-
-  title: Text(name ?? ""),
-  subtitle: Text(phone_number ?? ""),
-    leading: CircleAvatar(child: Text('A')),
-    // leading: CircleAvatar(child: Text('A')),
-);
-
-Widget build(BuildContext context) {
-  return FutureBuilder<List<Leads>>(
-    future: fetchLeads(),
-    builder: (context, snapshot) {
-      if (snapshot.hasData) {
-        List<Leads> data = snapshot.data;
-        return _leadsListView(data);
-      } else if (snapshot.hasError) {
-        return Text("${snapshot.error}");
-      }
-      return CircularProgressIndicator();
-    },
-  );
-}
-
-class LeadsList extends StatefulWidget {
-  @override
-  _LeadsList createState() => _LeadsList();
-}
-class _LeadsList extends State<LeadsList> {
-  @override
-  void initState() {
-    // fetchLeads;
-    super.initState();
-  }
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Leads List',
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Leads'),
-        ),
-        body: Center(
-            child: LeadsListView()
-        ),
-      ),
-    );
-  }
-}
 
